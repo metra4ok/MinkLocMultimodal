@@ -3,6 +3,7 @@
 
 import argparse
 import torch
+import wandb
 
 from training.trainer import do_train
 from misc.utils import MinkLocParams
@@ -21,6 +22,8 @@ if __name__ == '__main__':
     print('Model config path: {}'.format(args.model_config))
     print('Debug mode: {}'.format(args.debug))
 
+    wandb.init(project='minkloc-multimodal', sync_tensorboard=True)
+
     params = MinkLocParams(args.config, args.model_config)
     params.print()
 
@@ -29,3 +32,5 @@ if __name__ == '__main__':
 
     dataloaders = make_dataloaders(params, debug=args.debug)
     do_train(dataloaders, params, debug=args.debug)
+    
+    wandb.finish()

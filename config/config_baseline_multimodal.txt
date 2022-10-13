@@ -2,8 +2,8 @@
 [DEFAULT]
 num_points = 4096
 
-dataset_folder = /data3/pointnetvlad/benchmark_datasets
-image_path = /data3/images4lidar_small20
+dataset_folder = /home/docker_minklocmultimodal/Datasets/pointnetvlad_data
+image_path = /home/docker_minklocmultimodal/Datasets/pointnetvlad_data/images4lidar_small20
 
 [TRAIN]
 num_workers = 8

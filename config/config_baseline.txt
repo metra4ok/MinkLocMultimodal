@@ -2,7 +2,7 @@
 [DEFAULT]
 num_points = 4096
 
-dataset_folder = /data3/pointnetvlad/benchmark_datasets
+dataset_folder = /home/docker_minklocmultimodal/Datasets/pointnetvlad_data
 
 [TRAIN]
 num_workers = 8

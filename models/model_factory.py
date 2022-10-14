@@ -20,7 +20,8 @@ def model_factory(params: MinkLocParams):
         image_fe_size = 128
         image_fe = ResnetFPN(out_channels=image_fe_size, lateral_dim=image_fe_size,
                              fh_num_bottom_up=4, fh_num_top_down=0)
-        model = MinkLocMultimodal(cloud_fe, cloud_fe_size, image_fe, image_fe_size, output_dim=cloud_fe_size + image_fe_size)
+        model = MinkLocMultimodal(cloud_fe, cloud_fe_size, image_fe, image_fe_size, output_dim=cloud_fe_size + image_fe_size,
+                                  fuse_method=params.model_params.fuse_method)
     elif params.model_params.model == 'MinkLoc3D':
         cloud_fe_size = 256
         cloud_fe = MinkLoc(in_channels=1, feature_size=cloud_fe_size, output_dim=cloud_fe_size,

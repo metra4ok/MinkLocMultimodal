@@ -109,6 +109,8 @@ def do_train(dataloaders, params: MinkLocParams, debug=False):
             params_l.append({'params': model.cloud_fe.parameters(), 'lr': params.lr})
         if model.final_block is not None:
             params_l.append({'params': model.final_net.parameters(), 'lr': params.lr})
+        if model.fuse_method == 'transformer':
+            params_l.append({'params': model.transformer_encoder.parameters(), 'lr': params.lr})
     else:
         # All parameters use the same lr
         params_l.append({'params': model.parameters(), 'lr': params.lr})

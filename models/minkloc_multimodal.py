@@ -51,6 +51,11 @@ class MinkLocMultimodal(torch.nn.Module):
         elif fuse_method == 'add':
             assert self.image_fe_size == self.cloud_fe_size
             self.fused_dim = self.image_fe_size
+        elif fuse_method == 'transformer':
+            assert self.image_fe_size == self.cloud_fe_size
+            transformer_encoder_layer = nn.TransformerEncoderLayer(d_model=128, nhead=8)
+            self.transformer_encoder = nn.TransformerEncoder(transformer_encoder_layer, num_layers=3)
+            self.fused_dim = self.image_fe_size + self.cloud_fe_size
         else:
             raise NotImplementedError('Unsupported fuse method: {}'.format(self.fuse_method))
 
@@ -87,6 +92,13 @@ class MinkLocMultimodal(torch.nn.Module):
             elif self.fuse_method == 'add':
                 assert cloud_embedding.shape == image_embedding.shape
                 x = cloud_embedding + image_embedding
+            elif self.fuse_method == 'transformer':
+                assert cloud_embedding.shape == image_embedding.shape
+                cloud_embedding = cloud_embedding.unsqueeze(1)
+                image_embedding = image_embedding.unsqueeze(1)
+                x = torch.cat([cloud_embedding, image_embedding], dim=1)
+                x = self.transformer_encoder(x)
+                x = x.view(-1, self.image_fe_size + self.cloud_fe_size)
             else:
                 raise NotImplementedError('Unsupported fuse method: {}'.format(self.fuse_method))
         elif self.cloud_fe is not None:
